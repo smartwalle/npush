@@ -3,7 +3,7 @@ package jpush
 import (
 	"encoding/base64"
 	"errors"
-	"fmt"
+	"github.com/smartwalle/ngx"
 )
 
 const (
@@ -36,8 +36,21 @@ func (this *JPush) Authorization() string {
 	return base64.StdEncoding.EncodeToString([]byte(this.appKey + ":" + this.masterSecret))
 }
 
-func (this *JPush) doRequest(api string, param interface{}) error {
+func (this *JPush) doRequest(api string, param interface{}, result interface{}) error {
 	var url = kJPushAPIDomain + api
 
-	fmt.Println(url)
+	var req = ngx.NewRequest("POST", url)
+	req.SetHeader("Authorization", "Basic "+this.authorization)
+	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_TEXT)
+	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
+	if err := req.MarshalJSON(param); err != nil {
+		return err
+	}
+
+	var rsp = req.Exec()
+	if err := rsp.UnmarshalJSON(&result); err != nil {
+		return err
+	}
+
+	return nil
 }
