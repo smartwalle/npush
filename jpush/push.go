@@ -9,10 +9,12 @@ import (
 )
 
 const (
-	kPushAPI      = "push"
-	kGroupPushAPI = "grouppush"
+	kPushAPI         = "push"
+	kGroupPushAPI    = "grouppush"
+	kPushValidateAPI = "push/validate"
 )
 
+// Push https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_1
 func (this *JPush) Push(param PushParam) (result *PushResponse, err error) {
 	if err = this.doRequest(http.MethodPost, kPushAPI, param, &result); err != nil {
 		return nil, err
@@ -23,6 +25,7 @@ func (this *JPush) Push(param PushParam) (result *PushResponse, err error) {
 	return result, err
 }
 
+// GroupPush https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#group-push-api
 func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam) (result *GroupPushResponse, err error) {
 	var url = kJPushAPIDomain + kGroupPushAPI
 
@@ -62,5 +65,16 @@ func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam
 		break
 	}
 
+	return result, err
+}
+
+// https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#api
+func (this *JPush) PushValidate(param PushParam) (result *PushResponse, err error) {
+	if err = this.doRequest(http.MethodPost, kPushValidateAPI, param, &result); err != nil {
+		return nil, err
+	}
+	if result != nil && result.Error != nil {
+		return nil, result.Error
+	}
 	return result, err
 }
