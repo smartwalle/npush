@@ -16,7 +16,7 @@ const (
 )
 
 const (
-	kGetCIDListAPI = "push/cid"
+	kGetCIDListAPI = kJPushAPIDomain + "push/cid"
 )
 
 type JPush struct {
@@ -46,9 +46,7 @@ func (this *JPush) Authorization(key, secret string) string {
 }
 
 func (this *JPush) doRequest(method, api string, param interface{}, result interface{}) error {
-	var url = kJPushAPIDomain + api
-
-	var req = ngx.NewRequest(method, url)
+	var req = ngx.NewRequest(method, api)
 	req.SetHeader("Authorization", "Basic "+this.authorization)
 	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
 	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)

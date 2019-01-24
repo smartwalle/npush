@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	kPushAPI         = "push"
-	kGroupPushAPI    = "grouppush"
-	kPushValidateAPI = "push/validate"
+	kPushAPI         = kJPushAPIDomain + "push"
+	kGroupPushAPI    = kJPushAPIDomain + "grouppush"
+	kPushValidateAPI = kJPushAPIDomain + "push/validate"
 )
 
 // Push https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_1
