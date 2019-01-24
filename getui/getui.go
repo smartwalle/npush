@@ -17,6 +17,10 @@ const (
 	kGeTuiAPIDomain = "https://restapi.getui.com/v1/"
 )
 
+const (
+	kAuthSignAPI = "auth_sign"
+)
+
 type GeTui struct {
 	appId        string
 	appKey       string
@@ -79,7 +83,7 @@ func (this *GeTui) doRequest(method, api string, param interface{}, result inter
 
 		this.token = authRsp.Token
 	}
-	var req = ngx.NewRequest(method, this.BuildAPI("auth_sign"))
+	var req = ngx.NewRequest(method, this.BuildAPI(api))
 	req.SetHeader("authtoken", this.token.AuthToken)
 	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
 
@@ -98,7 +102,7 @@ func (this *GeTui) doRequest(method, api string, param interface{}, result inter
 }
 
 func (this *GeTui) AuthSign() (result *AuthSignResponse, err error) {
-	var req = ngx.NewRequest(http.MethodPost, this.BuildAPI("auth_sign"))
+	var req = ngx.NewRequest(http.MethodPost, this.BuildAPI(kAuthSignAPI))
 	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
 	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
 
