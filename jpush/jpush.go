@@ -37,12 +37,12 @@ func New(appKey, masterSecret string) (*JPush, error) {
 	var p = &JPush{}
 	p.appKey = appKey
 	p.masterSecret = masterSecret
-	p.authorization = p.Authorization()
+	p.authorization = p.Authorization(p.appKey, p.masterSecret)
 	return p, nil
 }
 
-func (this *JPush) Authorization() string {
-	return base64.StdEncoding.EncodeToString([]byte(this.appKey + ":" + this.masterSecret))
+func (this *JPush) Authorization(key, secret string) string {
+	return base64.StdEncoding.EncodeToString([]byte(key + ":" + secret))
 }
 
 func (this *JPush) doRequest(method, api string, param interface{}, result interface{}) error {

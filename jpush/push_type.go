@@ -80,3 +80,11 @@ type PushResponse struct {
 	SendNo string `json:"sendno"`
 	MsgId  string `json:"msg_id"`
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+type GroupPushResponse struct {
+	Error  *Error `json:"error"`
+	Id     string `json:"id"`
+	SendNo string `json:"sendno"`
+	MsgId  string `json:"msg_id"`
+}
