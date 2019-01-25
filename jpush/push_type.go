@@ -49,11 +49,11 @@ type NotificationIOS struct {
 	Alert            interface{}       `json:"alert,omitempty"`             // 必填, 这里指定内容将会覆盖上级统一指定的 alert 信息；内容为空则不展示到通知栏。支持字符串形式也支持官方定义的 alert payload 结构，在该结构中包含 title 和 subtitle 等官方支持的 key
 	Sound            interface{}       `json:"sound,omitempty"`             // 可选, 普通通知： string类型，如果无此字段，则此消息无声音提示；有此字段，如果找到了指定的声音就播放该声音，否则播放默认声音，如果此字段为空字符串，iOS 7 为默认声音，iOS 8 及以上系统为无声音。说明：JPush 官方 SDK 会默认填充声音字段，提供另外的方法关闭声音，详情查看各 SDK 的源码。 告警通知： JSON Object ,支持官方定义的 payload 结构，在该结构中包含 critical 、name 和 volume 等官方支持的 key .
 	Badge            int               `json:"badge,omitempty"`             // 可选, 如果不填，表示不改变角标数字，否则把角标数字改为指定的数字；为 0 表示清除。JPush 官方 SDK 会默认填充 badge 值为 "+1",详情参考：badge +1
-	ContentAvailable bool              `json:"content_available,omitempty"` // 可选, 推送的时候携带 "content-available":true 说明是 Background Remote Notification，如果不携带此字段则是普通的 Remote Notification。详情参考：Background Remote Notification
-	MutableContent   bool              `json:"mutable_content,omitempty"`   // 可选, 推送的时候携带 ”mutable-content":true 说明是支持iOS10的UNNotificationServiceExtension，如果不携带此字段则是普通的 Remote Notification。详情参考：UNNotificationServiceExtension
+	ContentAvailable bool              `json:"content-available,omitempty"` // 可选, 推送的时候携带 "content-available":true 说明是 Background Remote Notification，如果不携带此字段则是普通的 Remote Notification。详情参考：Background Remote Notification
+	MutableContent   bool              `json:"mutable-content,omitempty"`   // 可选, 推送的时候携带 ”mutable-content":true 说明是支持iOS10的UNNotificationServiceExtension，如果不携带此字段则是普通的 Remote Notification。详情参考：UNNotificationServiceExtension
 	Category         string            `json:"category,omitempty"`          // 可选, IOS 8 才支持。设置 APNs payload 中的 "category" 字段值
 	Extras           map[string]string `json:"extras,omitempty"`            // 可选, 这里自定义 Key / value 信息，以供业务使用。
-	ThreadId         string            `json:"thread_id,omitempty"`         // 可选, ios 的远程通知通过该属性来对通知进行分组，同一个 thread-id 的通知归为一组。
+	ThreadId         string            `json:"thread-id,omitempty"`         // 可选, ios 的远程通知通过该属性来对通知进行分组，同一个 thread-id 的通知归为一组。
 }
 
 // Message https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#message
