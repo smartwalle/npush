@@ -42,7 +42,11 @@ type NotificationAndroid struct {
 	BigPicPath string            `json:"big_pic_path,omitempty"` // 可选, 当 style = 3 时可用，可以是网络图片 url，或本地图片的 path，目前支持 .jpg 和 .png 后缀的图片。图片内容会被通知栏以大图片的形式展示出来。如果是 http／https 的 url，会自动下载；如果要指定开发者准备的本地图片就填 sdcard 的相对路径。支持 api 16 以上的 rom。
 	Extras     map[string]string `json:"extras,omitempty"`       // 可选, 这里自定义 JSON 格式的 Key / Value 信息，以供业务使用。
 	LargeIcon  string            `json:"large_icon,omitempty"`   // 可选, 图标路径可以是以http或https开头的网络图片，如：http:jiguang.cn/logo.png ,图标大小不超过 30 k; 也可以是位于drawable资源文件夹的图标路径，如：R.drawable.lg_icon；
-	Intent     map[string]string `json:"intent,omitempty"`       // 可选, 使用 intent 里的 url 指定点击通知栏后跳转的目标页面。
+	Intent     *Intent           `json:"intent,omitempty"`       // 可选, 使用 intent 里的 url 指定点击通知栏后跳转的目标页面。
+}
+
+type Intent struct {
+	URL string `json:"url,omitempty"`
 }
 
 type NotificationIOS struct {
