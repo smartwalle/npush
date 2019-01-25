@@ -53,8 +53,8 @@ func NewClient(p12, password string) (*http.Client, error) {
 	return &http.Client{Transport: transport}, nil
 }
 
-func (this *ApplePush) Push(deviceToken string, header *Header, payload *Payload) (result string, err error) {
-	pBytes, err := json.Marshal(payload)
+func (this *ApplePush) Push(deviceToken string, header *Header, payload Payload) (result string, err error) {
+	pBytes, err := json.Marshal(payload.toMap())
 	if err != nil {
 		return "", err
 	}

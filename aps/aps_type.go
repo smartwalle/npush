@@ -1,7 +1,6 @@
 package aps
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
@@ -18,6 +17,7 @@ const (
 	kMaxPayload = 4096
 )
 
+//////////////////////////////////////////////////////////////////////////////////
 type Header struct {
 	ID          string
 	CollapseID  string
@@ -48,7 +48,13 @@ func (this *Header) set(reqHeader http.Header) {
 	}
 }
 
-type Payload struct {
+//////////////////////////////////////////////////////////////////////////////////
+type Payload interface {
+	toMap() map[string]interface{}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+type APS struct {
 	Alert            Alert
 	Badge            uint
 	Sound            string
@@ -59,7 +65,7 @@ type Payload struct {
 	userInfo         map[string]interface{}
 }
 
-func (this *Payload) AddUserInfo(key string, value interface{}) {
+func (this *APS) AddUserInfo(key string, value interface{}) {
 	if key == "" || value == nil {
 		return
 	}
@@ -92,7 +98,7 @@ func (this *Alert) isEmpty() bool {
 	return len(this.Body) == 0 && this.isSimple()
 }
 
-func (this *Payload) toMap() map[string]interface{} {
+func (this *APS) toMap() map[string]interface{} {
 	aps := make(map[string]interface{}, 5)
 
 	if !this.Alert.isEmpty() {
@@ -124,10 +130,7 @@ func (this *Payload) toMap() map[string]interface{} {
 	return map[string]interface{}{"aps": aps}
 }
 
-func (this Payload) MarshalJSON() ([]byte, error) {
-	return json.Marshal(this.toMap())
-}
-
+//////////////////////////////////////////////////////////////////////////////////
 type PushResponse struct {
 	Reason string `json:"reason"`
 }
