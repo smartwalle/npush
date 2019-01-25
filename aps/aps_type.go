@@ -99,7 +99,7 @@ func (this *Alert) isEmpty() bool {
 }
 
 func (this *APS) toMap() map[string]interface{} {
-	aps := make(map[string]interface{}, 5)
+	var aps = make(map[string]interface{}, 8)
 
 	if !this.Alert.isEmpty() {
 		if this.Alert.isSimple() {
