@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	kDevelopmentURL     = "https://api.development.push.apple.com"
-	kDevelopmentURL2197 = "https://api.development.push.apple.com:2197"
-	kProductionURL      = "https://api.push.apple.com"
-	kProductionURL2197  = "https://api.push.apple.com:2197"
+	kDevelopmentURL     = "https://api.development.push.apple.com/3/device/%s"
+	kDevelopmentURL2197 = "https://api.development.push.apple.com:2197/3/device/%s"
+	kProductionURL      = "https://api.push.apple.com/3/device/%s"
+	kProductionURL2197  = "https://api.push.apple.com:2197/3/device/%s"
 )
 
 const (

@@ -63,7 +63,8 @@ func (this *ApplePush) Push(deviceToken string, header *Header, payload Payload)
 		return "", errors.New("payload too large")
 	}
 
-	var urlStr = fmt.Sprintf("%s/3/device/%v", this.domain, deviceToken)
+	var urlStr = fmt.Sprintf(this.domain, deviceToken)
+	fmt.Println(urlStr)
 
 	req, err := http.NewRequest("POST", urlStr, bytes.NewReader(pBytes))
 	if err != nil {
