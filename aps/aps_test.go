@@ -1,7 +1,7 @@
 package aps_test
 
 import (
-	"gitlab.com/smartwalle/push4go/aps"
+	"github.com/smartwalle/push4go/aps"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package jpush_test
 
 import (
-	"gitlab.com/smartwalle/push4go/jpush"
+	"github.com/smartwalle/push4go/jpush"
 	"testing"
 )
 
