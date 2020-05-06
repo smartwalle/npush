@@ -45,8 +45,8 @@ func (this *JPush) Authorization(key, secret string) string {
 	return base64.StdEncoding.EncodeToString([]byte(key + ":" + secret))
 }
 
-func (this *JPush) doRequest(method, api string, param interface{}, result interface{}) error {
-	var req = ngx.NewRequest(method, api)
+func (this *JPush) doRequest(method, url string, param interface{}, result interface{}) error {
+	var req = ngx.NewRequest(method, url)
 	req.SetHeader("Authorization", "Basic "+this.authorization)
 	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
 	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
@@ -65,6 +65,7 @@ func (this *JPush) doRequest(method, api string, param interface{}, result inter
 	return nil
 }
 
+// GetCIdList 获取推送唯一标识符 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#cid
 func (this *JPush) GetCIdList(count int, cType string) (result *CIDListResponse, err error) {
 	if count <= 0 {
 		count = 10
@@ -76,9 +77,9 @@ func (this *JPush) GetCIdList(count int, cType string) (result *CIDListResponse,
 		v.Set("type", cType)
 	}
 
-	var api = fmt.Sprintf("%s?%s", kGetCIDListAPI, v.Encode())
+	var url = fmt.Sprintf("%s?%s", kGetCIDListAPI, v.Encode())
 
-	if err = this.doRequest(http.MethodGet, api, nil, &result); err != nil {
+	if err = this.doRequest(http.MethodGet, url, nil, &result); err != nil {
 		return nil, err
 	}
 	if result != nil && result.Error != nil {

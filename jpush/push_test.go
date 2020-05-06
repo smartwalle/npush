@@ -12,12 +12,12 @@ func TestJPush_Push(t *testing.T) {
 	p.Notification = &jpush.Notification{}
 	p.Notification.Alert = "notification alert"
 
-	p.Notification.Android = &jpush.NotificationAndroid{}
+	p.Notification.Android = &jpush.Android{}
 	p.Notification.Android.Title = "title"
 	p.Notification.Android.BigText = "big text"
 	p.Notification.Android.Style = 1
 
-	p.Notification.IOS = &jpush.NotificationIOS{}
+	p.Notification.IOS = &jpush.IOS{}
 	p.Notification.IOS.Alert = "ios"
 	p.Notification.IOS.Badge = 1
 
@@ -39,12 +39,12 @@ func TestJPush_GroupPush(t *testing.T) {
 	p.Notification = &jpush.Notification{}
 	p.Notification.Alert = "notification alert"
 
-	p.Notification.Android = &jpush.NotificationAndroid{}
+	p.Notification.Android = &jpush.Android{}
 	p.Notification.Android.Title = "title"
 	p.Notification.Android.BigText = "big text"
 	p.Notification.Android.Style = 1
 
-	p.Notification.IOS = &jpush.NotificationIOS{}
+	p.Notification.IOS = &jpush.IOS{}
 	p.Notification.IOS.Alert = "ios"
 	p.Notification.IOS.Badge = 1
 
@@ -56,5 +56,7 @@ func TestJPush_GroupPush(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Log(rsp.Id, rsp.MsgId, rsp.SendNo)
+	for _, r := range rsp.Result {
+		t.Log(r.Id, r.MsgId, r.SendNo)
+	}
 }

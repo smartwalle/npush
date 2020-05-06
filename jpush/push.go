@@ -14,7 +14,7 @@ const (
 	kPushValidateAPI = kJPushAPIDomain + "push/validate"
 )
 
-// Push https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_1
+// Push 推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_1
 func (this *JPush) Push(param PushParam) (result *PushResponse, err error) {
 	if err = this.doRequest(http.MethodPost, kPushAPI, param, &result); err != nil {
 		return nil, err
@@ -25,11 +25,9 @@ func (this *JPush) Push(param PushParam) (result *PushResponse, err error) {
 	return result, err
 }
 
-// GroupPush https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#group-push-api
+// GroupPush 应用分组推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#group-push-api
 func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam) (result *GroupPushResponse, err error) {
-	var url = kJPushAPIDomain + kGroupPushAPI
-
-	var req = ngx.NewRequest(http.MethodPost, url)
+	var req = ngx.NewRequest(http.MethodPost, kGroupPushAPI)
 	req.SetHeader("Authorization", "Basic "+this.Authorization(fmt.Sprintf("group-%s", groupKey), groupMasterSecret))
 	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
 	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
@@ -59,16 +57,17 @@ func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam
 
 	result = &GroupPushResponse{}
 	for key, value := range rMap {
-		result.Id = key
-		result.SendNo = value["sendno"].(string)
-		result.MsgId = value["msg_id"].(string)
-		break
+		var r = &GroupPushResult{}
+		r.Id = key
+		r.SendNo = value["sendno"].(string)
+		r.MsgId = value["msg_id"].(string)
+		result.Result = append(result.Result, r)
 	}
 
 	return result, err
 }
 
-// https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#api
+// PushValidate 推送校验 API https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#api
 func (this *JPush) PushValidate(param PushParam) (result *PushResponse, err error) {
 	if err = this.doRequest(http.MethodPost, kPushValidateAPI, param, &result); err != nil {
 		return nil, err

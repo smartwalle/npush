@@ -1,6 +1,5 @@
 package jpush
 
-//////////////////////////////////////////////////////////////////////////////////
 // PushParam https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_7
 type PushParam struct {
 	Platform     interface{}   `json:"platform"`               // 必填, 推送平台设置, JPush 当前支持 Android, iOS, Windows Phone 三个平台的推送。其关键字分别为："all", "android", "ios", "winphone"。
@@ -24,12 +23,12 @@ type Audience struct {
 
 // Notification https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#notification
 type Notification struct {
-	Alert   string               `json:"alert"`
-	Android *NotificationAndroid `json:"android,omitempty"`
-	IOS     *NotificationIOS     `json:"ios,omitempty"`
+	Alert   string   `json:"alert"`
+	Android *Android `json:"android,omitempty"`
+	IOS     *IOS     `json:"ios,omitempty"`
 }
 
-type NotificationAndroid struct {
+type Android struct {
 	Alert      string            `json:"alert,omitempty"`        // 必填, 这里指定了，则会覆盖上级统一指定的 alert 信息；内容可以为空字符串，则表示不展示到通知栏。
 	Title      string            `json:"title,omitempty"`        // 可选, 如果指定了，则通知里原来展示 App 名称的地方，将展示成这个字段。
 	BuilderId  int               `json:"builder_id,omitempty"`   // 可选, 栏样式 ID	Android SDK 可设置通知栏样式，这里根据样式 ID 来指定该使用哪套样式。
@@ -49,7 +48,7 @@ type Intent struct {
 	URL string `json:"url,omitempty"`
 }
 
-type NotificationIOS struct {
+type IOS struct {
 	Alert            interface{}       `json:"alert,omitempty"`             // 必填, 这里指定内容将会覆盖上级统一指定的 alert 信息；内容为空则不展示到通知栏。支持字符串形式也支持官方定义的 alert payload 结构，在该结构中包含 title 和 subtitle 等官方支持的 key
 	Sound            interface{}       `json:"sound,omitempty"`             // 可选, 普通通知： string类型，如果无此字段，则此消息无声音提示；有此字段，如果找到了指定的声音就播放该声音，否则播放默认声音，如果此字段为空字符串，iOS 7 为默认声音，iOS 8 及以上系统为无声音。说明：JPush 官方 SDK 会默认填充声音字段，提供另外的方法关闭声音，详情查看各 SDK 的源码。 告警通知： JSON Object ,支持官方定义的 payload 结构，在该结构中包含 critical 、name 和 volume 等官方支持的 key .
 	Badge            int               `json:"badge,omitempty"`             // 可选, 如果不填，表示不改变角标数字，否则把角标数字改为指定的数字；为 0 表示清除。JPush 官方 SDK 会默认填充 badge 值为 "+1",详情参考：badge +1
@@ -78,16 +77,18 @@ type Options struct {
 	BigPushDuration int    `json:"big_push_duration,omitempty"` // 又名缓慢推送，把原本尽可能快的推送速度，降低下来，给定的 n 分钟内，均匀地向这次推送的目标用户推送。最大值为 1400。未设置则不是定速推送。
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 type PushResponse struct {
 	Error  *Error `json:"error"`
 	SendNo string `json:"sendno"`
 	MsgId  string `json:"msg_id"`
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 type GroupPushResponse struct {
-	Error  *Error `json:"error"`
+	Error  *Error             `json:"error"`
+	Result []*GroupPushResult `json:"result"`
+}
+
+type GroupPushResult struct {
 	Id     string `json:"id"`
 	SendNo string `json:"sendno"`
 	MsgId  string `json:"msg_id"`
