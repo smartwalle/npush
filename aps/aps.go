@@ -11,19 +11,19 @@ import (
 	"net/http"
 )
 
-type ApplePush struct {
+type Client struct {
 	domain           string
 	bundleIdentifier string
 	Client           *http.Client
 }
 
-func New(bundleIdentifier, p12, password string, isProduction bool) (*ApplePush, error) {
+func New(bundleIdentifier, p12, password string, isProduction bool) (*Client, error) {
 	client, err := NewClient(p12, password)
 	if err != nil {
 		return nil, err
 	}
 
-	var p = &ApplePush{}
+	var p = &Client{}
 	p.bundleIdentifier = bundleIdentifier
 	p.Client = client
 	if isProduction {
@@ -53,7 +53,7 @@ func NewClient(p12, password string) (*http.Client, error) {
 	return &http.Client{Transport: transport}, nil
 }
 
-func (this *ApplePush) Push(deviceToken string, header *Header, payload Payload) (result string, err error) {
+func (this *Client) Push(deviceToken string, header *Header, payload Payload) (result string, err error) {
 	pBytes, err := json.Marshal(payload.toMap())
 	if err != nil {
 		return "", err

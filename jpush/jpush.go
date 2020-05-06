@@ -17,13 +17,13 @@ const (
 	kGetCIDListAPI = kJPushAPIDomain + "push/cid"
 )
 
-type JPush struct {
+type Client struct {
 	appKey        string
 	masterSecret  string
 	authorization string
 }
 
-func New(appKey, masterSecret string) (*JPush, error) {
+func New(appKey, masterSecret string) (*Client, error) {
 	if appKey == "" {
 		return nil, errors.New("请提供 appKey 信息")
 	}
@@ -32,18 +32,18 @@ func New(appKey, masterSecret string) (*JPush, error) {
 		return nil, errors.New("请提供 masterSecret 信息")
 	}
 
-	var p = &JPush{}
+	var p = &Client{}
 	p.appKey = appKey
 	p.masterSecret = masterSecret
 	p.authorization = p.Authorization(p.appKey, p.masterSecret)
 	return p, nil
 }
 
-func (this *JPush) Authorization(key, secret string) string {
+func (this *Client) Authorization(key, secret string) string {
 	return base64.StdEncoding.EncodeToString([]byte(key + ":" + secret))
 }
 
-func (this *JPush) doRequest(method, url string, param interface{}, result interface{}) error {
+func (this *Client) doRequest(method, url string, param interface{}, result interface{}) error {
 	var req = ngx.NewRequest(method, url)
 	req.SetHeader("Authorization", "Basic "+this.authorization)
 	req.SetHeader("Accept", ngx.ContentTypeJSON)
@@ -58,7 +58,7 @@ func (this *JPush) doRequest(method, url string, param interface{}, result inter
 }
 
 // GetCIdList 获取推送唯一标识符 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#cid
-func (this *JPush) GetCIdList(count int, cType string) (result *CIDListResponse, err error) {
+func (this *Client) GetCIdList(count int, cType string) (result *CIDListResponse, err error) {
 	if count <= 0 {
 		count = 10
 	}
