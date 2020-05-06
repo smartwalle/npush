@@ -1,8 +1,6 @@
 package jpush
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/smartwalle/ngx"
 	"net/http"
@@ -29,14 +27,8 @@ func (this *JPush) Push(param PushParam) (result *PushResponse, err error) {
 func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam) (result *GroupPushResponse, err error) {
 	var req = ngx.NewRequest(http.MethodPost, kGroupPushAPI)
 	req.SetHeader("Authorization", "Basic "+this.Authorization(fmt.Sprintf("group-%s", groupKey), groupMasterSecret))
-	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
-	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
-
-	data, err := json.Marshal(param)
-	if err != nil {
-		return nil, err
-	}
-	req.SetBody(bytes.NewReader(data))
+	req.SetHeader("Accept", ngx.ContentTypeJSON)
+	req.WriteJSON(param)
 
 	var rMap map[string]map[string]interface{}
 

@@ -1,9 +1,7 @@
 package jpush
 
 import (
-	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/smartwalle/ngx"
@@ -48,14 +46,8 @@ func (this *JPush) Authorization(key, secret string) string {
 func (this *JPush) doRequest(method, url string, param interface{}, result interface{}) error {
 	var req = ngx.NewRequest(method, url)
 	req.SetHeader("Authorization", "Basic "+this.authorization)
-	req.SetHeader("Content-Type", ngx.K_CONTENT_TYPE_JSON)
-	req.SetHeader("Accept", ngx.K_CONTENT_TYPE_JSON)
-
-	data, err := json.Marshal(param)
-	if err != nil {
-		return err
-	}
-	req.SetBody(bytes.NewReader(data))
+	req.SetHeader("Accept", ngx.ContentTypeJSON)
+	req.WriteJSON(param)
 
 	var rsp = req.Exec()
 	if err := rsp.UnmarshalJSON(&result); err != nil {

@@ -1,5 +1,7 @@
 github.com/smartwalle/ngx v1.0.0 h1:fBCvRGNM88s6quNn3fi65sFiEDQLaWU+w4MdVC7+fGU=
 github.com/smartwalle/ngx v1.0.0/go.mod h1:ml3CEnDnA94rNqRC9/lbflZNevlW+Cbgv6Gp8WDy6AU=
+github.com/smartwalle/ngx v1.0.1 h1:TR9roGqj3+5jj6Hv9PJKbUByS+DnURKmBg7Fiu309Hc=
+github.com/smartwalle/ngx v1.0.1/go.mod h1:ml3CEnDnA94rNqRC9/lbflZNevlW+Cbgv6Gp8WDy6AU=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79 h1:IaQbIIB2X/Mp/DKctl6ROxz1KyMlKp4uyvL6+kQ7C88=
 golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
