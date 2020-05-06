@@ -7,8 +7,6 @@ import (
 
 func TestJPush_Push(t *testing.T) {
 	var p = jpush.PushParam{}
-	p.Platform = "all"
-	p.Audience = "all"
 	p.Notification = &jpush.Notification{}
 	p.Notification.Alert = "notification alert"
 
@@ -34,8 +32,6 @@ func TestJPush_Push(t *testing.T) {
 
 func TestJPush_GroupPush(t *testing.T) {
 	var p = jpush.PushParam{}
-	p.Platform = "all"
-	p.Audience = "all"
 	p.Notification = &jpush.Notification{}
 	p.Notification.Alert = "notification alert"
 
@@ -57,6 +53,6 @@ func TestJPush_GroupPush(t *testing.T) {
 	}
 
 	for _, r := range rsp.Result {
-		t.Log(r.Id, r.MsgId, r.SendNo)
+		t.Log(r.Code, r.Message, r.Id, r.MsgId, r.SendNo)
 	}
 }

@@ -17,7 +17,6 @@ const (
 	kMaxPayload = 4096
 )
 
-//////////////////////////////////////////////////////////////////////////////////
 type Header struct {
 	ID          string
 	CollapseID  string
@@ -48,12 +47,10 @@ func (this *Header) set(reqHeader http.Header) {
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 type Payload interface {
 	toMap() map[string]interface{}
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 type APS struct {
 	Alert            Alert
 	Badge            uint
@@ -130,7 +127,6 @@ func (this *APS) toMap() map[string]interface{} {
 	return map[string]interface{}{"aps": aps}
 }
 
-//////////////////////////////////////////////////////////////////////////////////
 type PushResponse struct {
 	Reason string `json:"reason"`
 }

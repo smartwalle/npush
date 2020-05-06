@@ -51,8 +51,17 @@ func (this *JPush) GroupPush(groupKey, groupMasterSecret string, param PushParam
 	for key, value := range rMap {
 		var r = &GroupPushResult{}
 		r.Id = key
-		r.SendNo = value["sendno"].(string)
-		r.MsgId = value["msg_id"].(string)
+
+		if err := value["error"]; err != nil {
+			var vErr = value["error"].(map[string]interface{})
+			var code = int(vErr["code"].(float64))
+			var msg = vErr["message"].(string)
+			r.Error = Error{Code: code, Message: msg}
+		} else {
+			r.SendNo = value["sendno"].(string)
+			r.MsgId = value["msg_id"].(string)
+		}
+
 		result.Result = append(result.Result, r)
 	}
 

@@ -1,13 +1,45 @@
 package jpush
 
+import (
+	"encoding/json"
+)
+
+var (
+	allBytes = []byte(`"all"`)
+)
+
 // PushParam https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_7
 type PushParam struct {
-	Platform     interface{}   `json:"platform"`               // 必填, 推送平台设置, JPush 当前支持 Android, iOS, Windows Phone 三个平台的推送。其关键字分别为："all", "android", "ios", "winphone"。
-	Audience     interface{}   `json:"audience"`               // 必填, 推送设备指定, 推送设备对象，表示一条推送可以被推送到哪些设备列表。确认推送设备对象，JPush 提供了多种方式，比如：别名、标签、注册 ID、分群、广播等。如果要发广播（全部设备），则直接填写 “all”。
+	Platform     Platform      `json:"platform"`               // 必填, 默认为所有(allBytes), 推送平台设置, JPush 当前支持 Android, iOS, Windows Phone 三个平台的推送。其关键字分别为："allBytes", "android", "ios", "winphone"。
+	Audience     Audience      `json:"audience"`               // 必填, 默认为所有(allBytes), 推送设备指定, 推送设备对象，表示一条推送可以被推送到哪些设备列表。确认推送设备对象，JPush 提供了多种方式，比如：别名、标签、注册 ID、分群、广播等。如果要发广播（全部设备），则直接填写 “allBytes”。
 	Notification *Notification `json:"notification,omitempty"` // 可选, 通知内容体。是被推送到客户端的内容。与 message 一起二者必须有其一，可以二者并存
 	Message      *Message      `json:"message,omitempty"`      // 可选, 消息内容体。是被推送到客户端的内容。与 notification 一起二者必须有其一，可以二者并存
 	Options      *Options      `json:"options,omitempty"`      // 可选, 推送参数
 	CID          string        `json:"cid,omitempty"`          // 可选, 用于防止 api 调用端重试造成服务端的重复推送而定义的一个标识符。
+}
+
+// Platform https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#platform
+type Platform struct {
+	IOS      bool `json:"ios"`
+	Android  bool `json:"android"`
+	WinPhone bool `json:"win_phone"`
+}
+
+func (this Platform) MarshalJSON() ([]byte, error) {
+	var pList = make([]string, 0, 3)
+	if this.IOS {
+		pList = append(pList, "ios")
+	}
+	if this.Android {
+		pList = append(pList, "android")
+	}
+	if this.WinPhone {
+		pList = append(pList, "winphone")
+	}
+	if len(pList) == 0 {
+		return allBytes, nil
+	}
+	return json.Marshal(pList)
 }
 
 // Audience https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#audience
@@ -18,7 +50,50 @@ type Audience struct {
 	Alias          []string `json:"alias,omitempty"`
 	RegistrationId []string `json:"registration_id,omitempty"`
 	Segment        []string `json:"segment,omitempty"`
-	Abtest         []string `json:"abtest,omitempty"`
+	AbTest         []string `json:"abtest,omitempty"`
+}
+
+type AudienceAlias Audience
+
+func (this Audience) MarshalJSON() ([]byte, error) {
+	if len(this.Tag) != 0 ||
+		len(this.TagAnd) != 0 ||
+		len(this.TagNot) != 0 ||
+		len(this.Alias) != 0 ||
+		len(this.RegistrationId) != 0 ||
+		len(this.Segment) != 0 ||
+		len(this.AbTest) != 0 {
+		return json.Marshal(AudienceAlias(this))
+	}
+	return allBytes, nil
+}
+
+func (this *Audience) WithRegistrationId(ids ...string) {
+	this.RegistrationId = ids
+}
+
+func (this *Audience) WithAlias(alias ...string) {
+	this.Alias = alias
+}
+
+func (this *Audience) WithTag(tag ...string) {
+	this.Tag = tag
+}
+
+func (this *Audience) WithTagAnd(tagAnd ...string) {
+	this.TagAnd = tagAnd
+}
+
+func (this *Audience) WithTagNot(tagNot ...string) {
+	this.TagNot = tagNot
+}
+
+func (this *Audience) WithSegment(segment ...string) {
+	this.Segment = segment
+}
+
+func (this *Audience) WithAbTest(abTest ...string) {
+	this.AbTest = abTest
 }
 
 // Notification https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#notification
@@ -89,6 +164,7 @@ type GroupPushResponse struct {
 }
 
 type GroupPushResult struct {
+	Error
 	Id     string `json:"id"`
 	SendNo string `json:"sendno"`
 	MsgId  string `json:"msg_id"`
