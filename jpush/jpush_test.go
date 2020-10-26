@@ -8,7 +8,7 @@ import (
 var client *jpush.Client
 
 func init() {
-	client, _ = jpush.New("486eb729aef667639c55c15e", "88670da91fa107d1b1ac52ac")
+	client, _ = jpush.New("4bd172536c75345d7243c7a0", "219a7aeeb09b362ac350a17d")
 }
 
 func TestJPush_GetCIdList(t *testing.T) {

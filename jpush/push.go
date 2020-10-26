@@ -30,9 +30,10 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 	req.SetHeader("Accept", ngx.ContentTypeJSON)
 	req.WriteJSON(param)
 
-	var rMap map[string]map[string]interface{}
+	var rMap map[string]interface{}
 
 	var rsp = req.Exec()
+	fmt.Println(rsp.MustString())
 	if err := rsp.UnmarshalJSON(&rMap); err != nil {
 		return nil, err
 	}
@@ -42,27 +43,32 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 	}
 
 	if rErr, ok := rMap["error"]; ok {
-		var code = int(rErr["code"].(float64))
-		var msg = rErr["message"].(string)
+		var rMap = rErr.(map[string]interface{})
+		var code int
+		if v, ok := rMap["code"]; ok {
+			code = int(v.(float64))
+		}
+
+		var msg string
+		if v, ok := rMap["message"]; ok {
+			msg = v.(string)
+		}
 		return nil, &Error{Code: code, Message: msg}
 	}
 
 	result = &GroupPushResponse{}
 	for key, value := range rMap {
-		var r = &GroupPushResult{}
-		r.Id = key
-
-		if err := value["error"]; err != nil {
-			var vErr = value["error"].(map[string]interface{})
-			var code = int(vErr["code"].(float64))
-			var msg = vErr["message"].(string)
-			r.Error = Error{Code: code, Message: msg}
+		if key == "group_msgid" {
+			result.GroupMsgId = value.(string)
 		} else {
-			r.SendNo = value["sendno"].(string)
-			r.MsgId = value["msg_id"].(string)
+			if vMap, ok := value.(map[string]interface{}); ok {
+				var r = &GroupPushResult{}
+				r.Id = key
+				r.SendNo = vMap["sendno"].(string)
+				r.MsgId = vMap["msg_id"].(string)
+				result.Result = append(result.Result, r)
+			}
 		}
-
-		result.Result = append(result.Result, r)
 	}
 
 	return result, err

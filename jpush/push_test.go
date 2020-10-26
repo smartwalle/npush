@@ -17,7 +17,7 @@ func TestJPush_Push(t *testing.T) {
 
 	p.Notification.IOS = &jpush.IOS{}
 	p.Notification.IOS.Alert = "ios"
-	p.Notification.IOS.Badge = 1
+	p.Notification.IOS.Badge = "1"
 
 	p.Options = &jpush.Options{}
 	p.Options.APNSProduction = false
@@ -42,7 +42,7 @@ func TestJPush_GroupPush(t *testing.T) {
 
 	p.Notification.IOS = &jpush.IOS{}
 	p.Notification.IOS.Alert = "ios"
-	p.Notification.IOS.Badge = 1
+	p.Notification.IOS.Badge = "1"
 
 	p.Options = &jpush.Options{}
 	p.Options.APNSProduction = false
