@@ -134,6 +134,18 @@ type IOS struct {
 	ThreadId         string            `json:"thread-id,omitempty"`         // 可选, ios 的远程通知通过该属性来对通知进行分组，同一个 thread-id 的通知归为一组。
 }
 
+type IOSAlert struct {
+	Title        string   `json:"title,omitempty"`
+	TitleLocKey  string   `json:"title-loc-key,omitempty"`
+	TitleLocArgs []string `json:"title-loc-args,omitempty"`
+	Subtitle     string   `json:"subtitle,omitempty"`
+	Body         string   `json:"body,omitempty"`
+	LocKey       string   `json:"loc-key,omitempty"`
+	LocArgs      []string `json:"loc-args,omitempty"`
+	ActionLocKey string   `json:"action-loc-key,omitempty"`
+	LaunchImage  string   `json:"launch-image,omitempty"`
+}
+
 // Message https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#message
 type Message struct {
 	MsgContent  string            `json:"msg_content"`            // 消息内容本身
