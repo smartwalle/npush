@@ -77,5 +77,5 @@ func (this *Client) GetCIdList(count int, cType string) (result *CIDListResponse
 	if result != nil && result.Error != nil {
 		return nil, result.Error
 	}
-	return result, err
+	return result, nil
 }

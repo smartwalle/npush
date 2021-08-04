@@ -46,7 +46,7 @@ func NewClient(p12, password string) (*http.Client, error) {
 	config.BuildNameToCertificate()
 	transport := &http.Transport{TLSClientConfig: config}
 
-	if err := http2.ConfigureTransport(transport); err != nil {
+	if err = http2.ConfigureTransport(transport); err != nil {
 		return nil, err
 	}
 
@@ -64,7 +64,7 @@ func (this *Client) Push(deviceToken string, header *Header, payload Payload) (r
 	}
 
 	var urlStr = fmt.Sprintf(this.domain, deviceToken)
-	fmt.Println(urlStr)
+	//fmt.Println(urlStr)
 
 	req, err := http.NewRequest("POST", urlStr, bytes.NewReader(pBytes))
 	if err != nil {

@@ -20,7 +20,7 @@ func (this *Client) Push(param PushParam) (result *PushResponse, err error) {
 	if result != nil && result.Error != nil {
 		return nil, result.Error
 	}
-	return result, err
+	return result, nil
 }
 
 // GroupPush 应用分组推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#group-push-api
@@ -33,8 +33,8 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 	var rMap map[string]interface{}
 
 	var rsp = req.Exec()
-	fmt.Println(rsp.MustString())
-	if err := rsp.UnmarshalJSON(&rMap); err != nil {
+	//fmt.Println(rsp.MustString())
+	if err = rsp.UnmarshalJSON(&rMap); err != nil {
 		return nil, err
 	}
 
@@ -43,15 +43,17 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 	}
 
 	if rErr, ok := rMap["error"]; ok {
-		var rMap = rErr.(map[string]interface{})
+		rMap = rErr.(map[string]interface{})
+		var value interface{}
+
 		var code int
-		if v, ok := rMap["code"]; ok {
-			code = int(v.(float64))
+		if value, ok = rMap["code"]; ok {
+			code = int(value.(float64))
 		}
 
 		var msg string
-		if v, ok := rMap["message"]; ok {
-			msg = v.(string)
+		if value, ok = rMap["message"]; ok {
+			msg = value.(string)
 		}
 		return nil, &Error{Code: code, Message: msg}
 	}
@@ -71,7 +73,7 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 		}
 	}
 
-	return result, err
+	return result, nil
 }
 
 // PushValidate 推送校验 API https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#api
@@ -82,5 +84,5 @@ func (this *Client) PushValidate(param PushParam) (result *PushResponse, err err
 	if result != nil && result.Error != nil {
 		return nil, result.Error
 	}
-	return result, err
+	return result, nil
 }

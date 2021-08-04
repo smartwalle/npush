@@ -26,7 +26,7 @@ func Decode(p12 []byte, password string) (tls.Certificate, error) {
 	if err != nil {
 		return tls.Certificate{}, err
 	}
-	if err := verify(cert); err != nil {
+	if err = verify(cert); err != nil {
 		return tls.Certificate{}, err
 	}
 	return tls.Certificate{
