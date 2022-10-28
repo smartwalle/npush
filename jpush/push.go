@@ -12,7 +12,7 @@ const (
 	kPushValidateAPI = kJPushAPIDomain + "push/validate"
 )
 
-// Push 推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#_1
+// Push 推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push
 func (this *Client) Push(param PushParam) (result *PushResponse, err error) {
 	if err = this.doRequest(http.MethodPost, kPushAPI, param, &result); err != nil {
 		return nil, err
@@ -23,7 +23,7 @@ func (this *Client) Push(param PushParam) (result *PushResponse, err error) {
 	return result, nil
 }
 
-// GroupPush 应用分组推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#group-push-api
+// GroupPush 应用分组推送 https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push_grouppush
 func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushParam) (result *GroupPushResponse, err error) {
 	var req = ngx.NewRequest(http.MethodPost, kGroupPushAPI)
 	req.SetHeader("Authorization", "Basic "+this.Authorization(fmt.Sprintf("group-%s", groupKey), groupMasterSecret))
@@ -76,7 +76,7 @@ func (this *Client) GroupPush(groupKey, groupMasterSecret string, param PushPara
 	return result, nil
 }
 
-// PushValidate 推送校验 API https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push/#api
+// PushValidate 推送校验 API https://docs.jiguang.cn/jpush/server/push/rest_api_v3_push_advanced#%E6%8E%A8%E9%80%81%E6%A0%A1%E9%AA%8C-api
 func (this *Client) PushValidate(param PushParam) (result *PushResponse, err error) {
 	if err = this.doRequest(http.MethodPost, kPushValidateAPI, param, &result); err != nil {
 		return nil, err

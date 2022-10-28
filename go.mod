@@ -1,4 +1,4 @@
-module github.com/smartwalle/push4go
+module github.com/smartwalle/npush
 
 go 1.12
 

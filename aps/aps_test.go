@@ -1,7 +1,7 @@
 package aps_test
 
 import (
-	"github.com/smartwalle/push4go/aps"
+	"github.com/smartwalle/npush/aps"
 	"testing"
 )
 
